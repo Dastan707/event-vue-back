@@ -1,5 +1,6 @@
 import { ConnectionOptions } from 'typeorm';
-import {Account} from "./users/entities/user.entity";
+import {Location} from "./locations/entities/location.entity";
+import {Account} from "./accounts/entities/account.entity";
 
 const config: ConnectionOptions={
     type: 'postgres',
@@ -8,7 +9,7 @@ const config: ConnectionOptions={
     username: 'blocknote',
     password: 'blocknote',
     database: 'blocknote',
-    entities: [Account],
+    entities: [Account, Location],
     synchronize: true,
 }
 export default config

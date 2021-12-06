@@ -3,26 +3,45 @@
 # ------------------------------------------------------
 
 type Account {
+  email: String!
   id: Float!
+  locations: [Location!]
   password: String!
   username: String!
+}
+
+input CreateLocationInput {
+  address: String!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  username: String!
+}
+
+type Location {
+  account: [Account!]
+  address: String!
+  id: Float!
 }
 
 type LoginResponse {
   access_token: String!
-  user: Account!
+  userId: Float!
 }
 
 input LoginUserInput {
+  email: String!
   password: String!
-  username: String!
 }
 
 type Mutation {
+  createLocation(createLocationInput: CreateLocationInput!): Location!
   login(loginUserInput: LoginUserInput!): LoginResponse!
-  signup(loginUserInput: LoginUserInput!): Account!
+  signup(createUserInput: CreateUserInput!): Account!
 }
 
 type Query {
-  users: [Account!]!
+  locations: [Location!]!
 }

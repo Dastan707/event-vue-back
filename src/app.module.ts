@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import {GraphQLModule} from "@nestjs/graphql";
 import { join} from 'path';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import ormconfig from "./ormconfig";
-import {Account} from "./users/entities/user.entity";
+import { LocationsModule } from './locations/locations.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
   imports: [
@@ -13,10 +12,10 @@ import {Account} from "./users/entities/user.entity";
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
           sortSchema: true
   }),
-      UsersModule,
-      AuthModule,
+      AccountsModule,
+      LocationsModule,
       TypeOrmModule.forRoot(ormconfig),
-
+      AccountsModule,
   ],
 
 })

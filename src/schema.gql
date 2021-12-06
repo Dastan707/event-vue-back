@@ -2,9 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Account {
+  id: Float!
+  password: String!
+  username: String!
+}
+
 type LoginResponse {
   access_token: String!
-  user: User!
+  user: Account!
 }
 
 input LoginUserInput {
@@ -14,16 +20,9 @@ input LoginUserInput {
 
 type Mutation {
   login(loginUserInput: LoginUserInput!): LoginResponse!
-  signup(loginUserInput: LoginUserInput!): User!
+  signup(loginUserInput: LoginUserInput!): Account!
 }
 
 type Query {
-  user(username: String!): User!
-  users: [User!]!
-}
-
-type User {
-  """Example field (placeholder)"""
-  id: Int!
-  username: String!
+  users: [Account!]!
 }

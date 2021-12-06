@@ -3,6 +3,9 @@ import {GraphQLModule} from "@nestjs/graphql";
 import { join} from 'path';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import {TypeOrmModule} from "@nestjs/typeorm";
+import ormconfig from "./ormconfig";
+import {Account} from "./users/entities/user.entity";
 
 @Module({
   imports: [
@@ -11,6 +14,12 @@ import { AuthModule } from './auth/auth.module';
           sortSchema: true
   }),
       UsersModule,
-      AuthModule,],
+      AuthModule,
+      TypeOrmModule.forRoot(ormconfig),
+
+  ],
+
 })
 export class AppModule {}
+
+

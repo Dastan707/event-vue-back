@@ -72,6 +72,7 @@ type Mutation {
 }
 
 type Query {
+  availableLocationByDate(availableLocationByDay: dayInput!): [Location!]!
   dates(dateIntervalInput: DateIntervalInput!): [Activity!]!
   locations: [Location!]!
 }
@@ -79,4 +80,8 @@ type Query {
 input UpdateLocationInput {
   address: String!
   id: Int!
+}
+
+input dayInput {
+  day: String!
 }

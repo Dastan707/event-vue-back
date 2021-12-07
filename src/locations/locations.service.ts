@@ -69,7 +69,7 @@ export class LocationsService {
 
 
 
-  async findById(id: number){
+  async findById(id){
     return this.locationService.findOne(id)
   }
 
@@ -110,38 +110,6 @@ export class LocationsService {
     return this.locationService.find()
   }
 
-  // async availableLocationByDate(dto: dayInput){
-  //   const date = dto.day
-  //   const newDate = new Date(date).toLocaleDateString()
-  //   const allActivity = await this.activitiesService.findAll()
-  //   const locationData = await this.findAll()
-  //   const dataLocation = []
-  //   const dataDate = []
-  //   const blackList = []
-  //   const veryWhitelist = []
-  //   for ( let i of locationData) {
-  //     dataLocation.push(i.id)
-  //   }
-  //   for (let i of allActivity){
-  //     if ( newDate === (i.day).toLocaleDateString()){
-  //       for (let x of dataLocation){
-  //         if (i.location.id === x){
-  //           blackList.push(i.location.id)
-  //           dataDate.push(i)
-  //         }
-  //       }
-  //     }
-  //   }
-  //   let difference = dataLocation.filter(x => !blackList.includes(x)).concat(blackList.filter(x => !dataLocation.includes(x)));
-  //   for ( let i of difference){
-  //     let x = await this.findWhiteLocation(i)
-  //
-  //     veryWhitelist.push(x.address)
-  //   }
-  //
-  //   console.log(veryWhitelist)
-  //   return veryWhitelist
-  // }
 
   async findWhiteLocation(id:number){
     return await this.locationService.findOne(id)

@@ -7,8 +7,6 @@ import {JwtAuthGuard} from "../accounts/jwt-auth.guard";
 import {User} from "../decorators/user.decorator";
 import {Account} from "../accounts/entities/account.entity";
 import {UpdateLocationInput} from "./dto/update-location.input";
-import {Activity} from "../activities/entities/activity.entity";
-import {dayInput} from "./dto/day.input";
 
 @Resolver(() => Location)
 export class LocationsResolver {
@@ -39,10 +37,5 @@ export class LocationsResolver {
   findAll() {
     return this.locationsService.findAll();
   }
-
-  // @Query(()=>[Location], {name: 'availableLocationByDate'})
-  // availableLocationByDate(@Args('availableLocationByDay') day: dayInput){
-  //   return this.locationsService.availableLocationByDate(day)
-  // }
 
 }

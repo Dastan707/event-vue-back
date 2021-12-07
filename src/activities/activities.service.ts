@@ -89,23 +89,18 @@ export class ActivitiesService {
         }
       }
     }
-    let difference = dataLocation.filter(x => !blackList.includes(x)).concat(blackList.filter(x => !dataLocation.includes(x)));
+    let difference = dataLocation.
+    filter(x => !blackList.
+    includes(x)).
+    concat(blackList.
+    filter(x => !dataLocation.includes(x)));
+
     for ( let i of difference){
       let x = await this.locationService.findWhiteLocation(i)
-      veryWhitelist.push(x.id)
+      veryWhitelist.push(x)
     }
     // const activities = await this.locationService.findById({where: {id: In(veryWhitelist)}});
-
-
-    const list = []
-    for (let i of veryWhitelist){
-      const x = await this.locationService.findById(i)
-      list.push(x)
-    }
-
-
-    console.log(list)
-    return list
+    return veryWhitelist
   }
   async findAll(){
     return this.activityRepository.find()

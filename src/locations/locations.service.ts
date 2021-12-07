@@ -111,7 +111,7 @@ export class LocationsService {
   }
 
 
-  async findWhiteLocation(id:number){
+  async findWhiteLocation(id){
     return await this.locationService.findOne(id)
   }
 }

@@ -5,6 +5,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import ormconfig from "./ormconfig";
 import { LocationsModule } from './locations/locations.module';
 import { AccountsModule } from './accounts/accounts.module';
+import { ActivitiesModule } from './activities/activities.module';
 
 
 @Module({
@@ -14,9 +15,10 @@ import { AccountsModule } from './accounts/accounts.module';
           sortSchema: true
   }),
       AccountsModule,
+      ActivitiesModule,
       LocationsModule,
       TypeOrmModule.forRoot(ormconfig),
-      AccountsModule,
+
   ],
 })
 export class AppModule {}

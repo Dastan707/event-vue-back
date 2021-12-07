@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import {Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Account} from "../../accounts/entities/account.entity";
+import {Activity} from "../../activities/entities/activity.entity";
 
 
 @Entity()
@@ -14,6 +15,11 @@ export class Location {
   @Column()
   @Field()
   address: string
+
+  @OneToMany(type=>Activity,activity=>activity.location)
+  @JoinColumn()
+  @Field(type => [Activity])
+  activities:Activity[]
 
   @ManyToOne(type => Account, account => account.locations,{eager:true})
   @JoinTable()

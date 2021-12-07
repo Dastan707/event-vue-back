@@ -54,7 +54,6 @@ export class ActivitiesService {
       const resData = await this.activityRepository.findOne({id: x})
       dats.push(resData)
     }
-    console.log(dats)
     return dats
   }
 
@@ -96,7 +95,7 @@ export class ActivitiesService {
     filter(x => !dataLocation.includes(x)));
 
     for ( let i of difference){
-      let x = await this.locationService.findWhiteLocation(i)
+      let x = await this.locationService.findById(i)
       veryWhitelist.push(x)
     }
     // const activities = await this.locationService.findById({where: {id: In(veryWhitelist)}});

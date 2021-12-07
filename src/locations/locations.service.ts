@@ -67,9 +67,7 @@ export class LocationsService {
     return new HttpException('Location was removed', HttpStatus.OK)
   }
 
-
-
-  async findById(id){
+  async findById(id: number){
     return this.locationService.findOne(id)
   }
 
@@ -108,10 +106,5 @@ export class LocationsService {
 
   async findAll(){
     return this.locationService.find()
-  }
-
-
-  async findWhiteLocation(id){
-    return await this.locationService.findOne(id)
   }
 }

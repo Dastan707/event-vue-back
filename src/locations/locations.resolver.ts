@@ -2,11 +2,11 @@ import {Resolver, Query, Mutation, Args, Int, Context, Parent} from '@nestjs/gra
 import { LocationsService } from './locations.service';
 import { Location } from './entities/location.entity';
 import { CreateLocationInput } from './dto/create-location.input';
-import {User} from "../decorators/user.decorator";
-
 import {UseGuards} from "@nestjs/common";
-import {Account} from "../accounts/entities/account.entity";
 import {JwtAuthGuard} from "../accounts/jwt-auth.guard";
+import {User} from "../decorators/user.decorator";
+import {Account} from "../accounts/entities/account.entity";
+import {UpdateLocationInput} from "./dto/update-location.input";
 
 @Resolver(() => Location)
 export class LocationsResolver {
@@ -14,24 +14,33 @@ export class LocationsResolver {
 
   @Mutation(() => Location)
   @UseGuards(JwtAuthGuard)
-  createLocation(@Args('createLocationInput') createLocationInput: CreateLocationInput,@User('currentUser') currentUser: Account ) {
-    console.log(location)
+  createLocation(@Args('createLocationInput') createLocationInput: CreateLocationInput, @User() currentUser: Account) {
     return this.locationsService.createLocation(createLocationInput, currentUser);
   }
 
-  @Query(() => [Location], { name: 'locations' })
+
+  @Mutation(() => Location)
+  @UseGuards(JwtAuthGuard)
+  removeLocation(@Args('id', { type: () => Int }) id: number, @User() currentUser: Account) {
+    return this.locationsService.remove(id, currentUser);
+  }
+
+  @Query(() => [Location], { name: 'locations'})
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.locationsService.findAll();
   }
 
+  @Mutation(() => Location)
+  @UseGuards(JwtAuthGuard)
+  updateLocation(@Args('updateLocationInput') updateLocationInput: UpdateLocationInput, @User() currentUser: Account) {
+    return this.locationsService.update(updateLocationInput.id, updateLocationInput, currentUser);
+  }
 
-  // @Mutation(() => Location)
-  // updateLocation(@Args('updateLocationInput') updateLocationInput: UpdateLocationInput) {
-  //   return this.locationsService.update(updateLocationInput.id, updateLocationInput);
-  // }
-  //
-  // @Mutation(() => Location)
-  // removeLocation(@Args('id', { type: () => Int }) id: number) {
-  //   return this.locationsService.remove(id);
-  // }
+  @Query(() => [Location], { name: 'locations'})
+  @UseGuards(JwtAuthGuard)
+  findAvailableLocations() {
+    return this.locationsService.findAvailableLocation();
+  }
+
 }

@@ -6,6 +6,7 @@ import ormconfig from "./ormconfig";
 import { LocationsModule } from './locations/locations.module';
 import { AccountsModule } from './accounts/accounts.module';
 
+
 @Module({
   imports: [
       GraphQLModule.forRoot({
@@ -17,7 +18,6 @@ import { AccountsModule } from './accounts/accounts.module';
       TypeOrmModule.forRoot(ormconfig),
       AccountsModule,
   ],
-
 })
 export class AppModule {}
 

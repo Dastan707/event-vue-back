@@ -7,48 +7,59 @@ import {Repository} from "typeorm";
 
 import {Context} from "@nestjs/graphql";
 import {Account} from "../accounts/entities/account.entity";
+import {AccountsService} from "../accounts/accounts.service";
+import {JwtService} from "@nestjs/jwt";
+import {constants} from "http2";
+
+
+
 
 @Injectable()
 export class LocationsService {
   constructor(
       @InjectRepository(Location)
-      private readonly locationService: Repository<Location>) {
+      private readonly locationService: Repository<Location>,
+      private readonly jwtService: JwtService) {
   }
 
-  async createLocation(dto: CreateLocationInput,@Context() context) {
+  async createLocation(dto: CreateLocationInput, token) {
     const location = new Location()
+    const currentUser = this.jwtService.verify(token)
     Object.assign(location, dto)
-    location.account=context.user
+    location.account=currentUser
     return await this.locationService.save(location)
 
 
   }
 
-  async updateLocation(id: number, dto: CreateLocationInput,currentUser:Account) {
+  async update(id: number, dto: UpdateLocationInput,currentUser) {
     const location = await this.locationService.findOne(id)
-
+    console.log(location)
+    const user = this.jwtService.verify(currentUser)
     if (!location) {
       throw new HttpException('activity does not exist', HttpStatus.NOT_FOUND)
     }
 
-    if(location.account.username!==currentUser.username){
+    if(location.account.email!==user.email){
       throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
-
     }
     Object.assign(location, dto)
     return await this.locationService.save(location)
   }
 
-  async deleteLocation(id: number,currentUser:Account) {
+  async remove(id: number, currentUser) {
     const location = await this.locationService.findOne(id)
+    const user = this.jwtService.verify(currentUser)
+
     if (!location) {
       throw new HttpException('location does not exist', HttpStatus.NOT_FOUND)
     }
-    if(location.account.username!==currentUser.username){
+    if(location.account.email!==user.email){
       throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
 
     }
-    return await this.locationService.delete(id)
+    await this.locationService.delete(id)
+    return new HttpException('Location was removed', HttpStatus.OK)
   }
 
   async findAvailableLocation() {
@@ -57,8 +68,6 @@ export class LocationsService {
       throw new HttpException(' no available location', HttpStatus.NOT_FOUND)
     }
     return availableLocation
-
-
   }
 
   // async findByLocation(id: number) {
@@ -86,7 +95,8 @@ export class LocationsService {
   // }
 
   async findAll(){
-    const locationAll = await this.locationService.find()
+    const locationAll = await this.locationService.find();
+    console.log(locationAll);
     return locationAll
   }
 

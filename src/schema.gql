@@ -21,7 +21,7 @@ input CreateUserInput {
 }
 
 type Location {
-  account: [Account!]
+  account: Account!
   address: String!
   id: Float!
 }
@@ -39,9 +39,16 @@ input LoginUserInput {
 type Mutation {
   createLocation(createLocationInput: CreateLocationInput!): Location!
   login(loginUserInput: LoginUserInput!): LoginResponse!
+  removeLocation(id: Int!): Location!
   signup(createUserInput: CreateUserInput!): Account!
+  updateLocation(updateLocationInput: UpdateLocationInput!): Location!
 }
 
 type Query {
   locations: [Location!]!
+}
+
+input UpdateLocationInput {
+  address: String!
+  id: Int!
 }

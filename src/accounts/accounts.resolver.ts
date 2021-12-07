@@ -15,7 +15,6 @@ export class AccountsResolver {
 
   @Mutation(() => LoginResponse)
   login(@Args('loginUserInput') loginUserInput: LoginUserInput){
-
     return this.accountsService.login(loginUserInput);
   }
 

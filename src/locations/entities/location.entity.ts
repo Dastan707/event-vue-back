@@ -17,6 +17,6 @@ export class Location {
 
   @ManyToOne(type => Account, account => account.locations,{eager:true})
   @JoinTable()
-  @Field(type =>[Account], {nullable: true})
+  @Field(type => Account)
   account: Account;
 }

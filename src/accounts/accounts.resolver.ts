@@ -23,29 +23,4 @@ export class AccountsResolver {
     return this.accountsService.registration(createUserInput);
   }
 
-
-  // @Mutation(() => Account)
-  // createAccount(@Args('createAccountInput') createAccountInput: CreateUserInput) {
-  //   return this.accountsService.create(createAccountInput);
-  // }
-  //
-  // @Query(() => [Account], { name: 'accounts' })
-  // findAll() {
-  //   return this.accountsService.findAll();
-  // }
-  //
-  // @Query(() => Account, { name: 'account' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.accountsService.findOne(id);
-  // }
-  //
-  // @Mutation(() => Account)
-  // updateAccount(@Args('updateAccountInput') updateAccountInput: UpdateAccountInput) {
-  //   return this.accountsService.update(updateAccountInput.id, updateAccountInput);
-  // }
-  //
-  // @Mutation(() => Account)
-  // removeAccount(@Args('id', { type: () => Int }) id: number) {
-  //   return this.accountsService.remove(id);
-  // }
 }

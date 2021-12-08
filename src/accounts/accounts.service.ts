@@ -54,10 +54,10 @@ export class AccountsService {
   private async validateUser(userDto: LoginUserInput) {
     const user = await this.getUserByEmail(userDto.email);
     const passwordEquals = await bcrypt.compare(userDto.password, user.password);
-    if (user && passwordEquals) {
-      return user;
+    if (!user || !passwordEquals) {
+      throw new UnauthorizedException({message: 'Некорректный емайл или пароль'})
     }
-    throw new UnauthorizedException({message: 'Некорректный емайл или пароль'})
+    return user;
   }
 
   async getUserByEmail(email:string){

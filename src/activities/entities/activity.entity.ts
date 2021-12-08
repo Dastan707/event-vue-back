@@ -35,9 +35,9 @@ export class Activity {
   @JoinColumn()
   @Field(type => Location)
   location:Location
-  //
-  // @ManyToOne(()=>Account,account=>account=>account.activities,{eager:true})
-  // @JoinColumn()
-  // @Field()
-  // account:Account
+
+  @ManyToOne(()=>Account,account=>account=>account.activities,{eager:true})
+  @JoinColumn()
+  @Field(type=>Account)
+  account:Account
 }

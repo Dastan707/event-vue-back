@@ -3,6 +3,7 @@
 # ------------------------------------------------------
 
 type Account {
+  activities: [Activity!]
   email: String!
   id: Float!
   locations: [Location!]
@@ -11,6 +12,7 @@ type Account {
 }
 
 type Activity {
+  account: Account!
   day: DateTime!
   description: String!
   id: Int!

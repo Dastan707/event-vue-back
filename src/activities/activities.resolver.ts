@@ -5,6 +5,10 @@ import { CreateActivityInput } from './dto/create-activity.input';
 import {DateIntervalInput} from "./dto/dateInterval.input";
 import {dayInput} from "./dto/day.input";
 import {Location} from "../locations/entities/location.entity";
+import {User} from "../decorators/user.decorator";
+import {Account} from "../accounts/entities/account.entity";
+import {UseGuards} from "@nestjs/common";
+import {JwtAuthGuard} from "../accounts/jwt-auth.guard";
 
 
 @Resolver(() => Activity)
@@ -12,13 +16,14 @@ export class ActivitiesResolver {
   constructor(private readonly activitiesService: ActivitiesService) {}
 
   @Mutation(() => Activity)
-  createActivity(@Args('createActivityInput') createActivityInput: CreateActivityInput, @Context() context) {
-    return this.activitiesService.createActivity(createActivityInput);
+  @UseGuards(JwtAuthGuard)
+  createActivity(@Args('createActivityInput') createActivityInput: CreateActivityInput, @Context() context, @User() currentUser: Account ) {
+    return this.activitiesService.createActivity(createActivityInput, currentUser);
   }
 
 
   @Query(() => [Activity], { name: 'dates' })
-  findActivityLocationAvailable(@Args('dateIntervalInput') dateIntervalInput: DateIntervalInput) {
+  findActivityLocationAvailable(@Args('dateIntervalInput') dateIntervalInput: DateIntervalInput ) {
     return this.activitiesService.findActivityAvailable(dateIntervalInput);
   }
 

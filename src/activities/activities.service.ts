@@ -6,6 +6,7 @@ import {In, Repository} from "typeorm";
 import {LocationsService} from "../locations/locations.service";
 import {DateIntervalInput} from "./dto/dateInterval.input";
 import {dayInput} from "./dto/day.input";
+import {JwtService} from "@nestjs/jwt";
 
 
 @Injectable()
@@ -16,22 +17,25 @@ export class ActivitiesService {
       private readonly activityRepository: Repository<Activity>,
       // @Inject(forwardRef(() => LocationsService))
       private locationService: LocationsService,
+      private readonly jwtService: JwtService
   ) {
   }
 
 
-  async create(dto: CreateActivityInput) {
+  async create(dto: CreateActivityInput, token) {
     const activity = new Activity()
     const day = new Date(dto.day)
     const location = await this.locationService.findById(dto.location)
     await this.locationService.findByLocationAndTime(dto.location, day)
+    const currentUser = await this.jwtService.verify(token)
     Object.assign(activity, dto)
+    activity.account = currentUser
     activity.location = location
     return this.activityRepository.save({...activity, day: day})
   }
 
-  async createActivity(activityDto: CreateActivityInput) {
-    return this.create(activityDto);
+  async createActivity(activityDto: CreateActivityInput, currentUser) {
+    return this.create(activityDto, currentUser);
   }
 
   async findActivityAvailable(dto: DateIntervalInput){
@@ -75,7 +79,6 @@ export class ActivitiesService {
     const locationData = await this.locationService.findAll()
     const dataLocation = []
     const blackList = []
-    const veryWhitelist = []
     for ( let i of locationData) {
       dataLocation.push(i.id)
     }
@@ -93,13 +96,9 @@ export class ActivitiesService {
     includes(x)).
     concat(blackList.
     filter(x => !dataLocation.includes(x)));
-
-    for ( let i of difference){
-      let x = await this.locationService.findById(i)
-      veryWhitelist.push(x)
-    }
-    // const activities = await this.locationService.findById({where: {id: In(veryWhitelist)}});
-    return veryWhitelist
+    const activities = await this.locationService.find(difference);
+    console.log(activities)
+    return activities
   }
   async findAll(){
     return this.activityRepository.find()

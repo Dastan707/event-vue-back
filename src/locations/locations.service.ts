@@ -3,7 +3,7 @@ import { CreateLocationInput } from './dto/create-location.input';
 import { UpdateLocationInput } from './dto/update-location.input';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Location} from "./entities/location.entity";
-import {Repository} from "typeorm";
+import {Repository, In} from "typeorm";
 
 import {Context} from "@nestjs/graphql";
 import {Account} from "../accounts/entities/account.entity";
@@ -67,8 +67,13 @@ export class LocationsService {
     return new HttpException('Location was removed', HttpStatus.OK)
   }
 
-  async findById(id: number){
+  async findById(id){
     return this.locationService.findOne(id)
+  }
+  async find(ids) {
+    return this.locationService.find({
+      where: {id: In(ids)}
+    })
   }
 
   async findByLocation(id: number) {

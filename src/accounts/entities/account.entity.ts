@@ -4,10 +4,11 @@ import {
   Column,
   BaseEntity,
   OneToMany,
-  JoinTable
+  JoinTable, JoinColumn
 } from "typeorm";
 import {Location} from "../../locations/entities/location.entity";
 import {Field, ObjectType} from "@nestjs/graphql";
+import {Activity} from "../../activities/entities/activity.entity";
 
 @Entity()
 @ObjectType()
@@ -29,9 +30,10 @@ export class Account extends BaseEntity{
   @Field()
   password: string
 
-  // @OneToMany(()=>Activity,(activity)=>activity.account)
-  // @JoinColumn()
-  // activities:Activity[]
+  @OneToMany(()=>Activity,(activity)=>activity.account)
+  @JoinColumn()
+  @Field(type => [Activity], {nullable: true})
+  activities:Activity[]
 
   @OneToMany(type => Location, location => location.account)
   @JoinTable()

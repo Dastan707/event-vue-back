@@ -125,6 +125,25 @@ export class ActivitiesService {
   }
 
 
+  async findByLocation(id: number) {
+    const locationById = await this.locationService.findById(id)
+    if (!locationById) {
+      throw new HttpException('there is no such location', HttpStatus.NOT_FOUND)
+    }
+    const activities = await this.findAll()
+
+    const entry = []
+
+    for ( let activity of activities){
+      if (activity.location.id == locationById.id){
+        console.log(activity)
+        entry.push(activity)
+      }
+    }
+
+    return entry
+  }
+
   async find(id){
     return this.activityRepository.find({where:{id: In(id)}})
   }

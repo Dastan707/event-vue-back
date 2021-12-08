@@ -74,18 +74,6 @@ export class LocationsService {
     })
   }
 
-  // async findByLocation(id: number) {
-  //   const locationById = await this.locationService.findOne(id, {relations: ["activities"]})
-  //
-  //   if (!locationById) {
-  //     throw new HttpException('there is no such location', HttpStatus.NOT_FOUND)
-  //   }
-  //   const currentActivity = locationById.activities
-  //   console.log(currentActivity)
-  //   return currentActivity
-  //
-  // }
-
   async findByLocationAndTime(id: number, day:Date) {
     const locationById = await this.locationService.findOne(id, {relations: ["activities"]})
     if (!locationById) {
@@ -104,7 +92,6 @@ export class LocationsService {
       }
     }
     return new HttpException('Created', HttpStatus.OK)
-
   }
 
   async findAll(){

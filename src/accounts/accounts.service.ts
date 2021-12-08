@@ -60,9 +60,6 @@ export class AccountsService {
     throw new UnauthorizedException({message: 'Некорректный емайл или пароль'})
   }
 
-  async verifyUser(token) {
-    return await this.jwtService.verify(token);
-  }
   async getUserByEmail(email:string){
     return await this.userRepository.findOne({where: {email}})
   }

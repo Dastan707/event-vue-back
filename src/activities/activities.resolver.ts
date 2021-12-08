@@ -46,4 +46,9 @@ export class ActivitiesResolver {
     return this.activitiesService.update(updateActivityInput, currentUser);
   }
 
+
+  @Query(()=> [Activity], { name: 'HOLA'})
+  findActLoc(@Args('id', {type: ()=> Int}) id: number){
+    return this.activitiesService.findByLocation(id)
+  }
 }

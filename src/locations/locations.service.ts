@@ -35,8 +35,8 @@ export class LocationsService {
     return this.locationService.save(location)
   }
 
-  async update(id: number, dto: UpdateLocationInput,currentUser) {
-    const location = await this.locationService.findOne(id)
+  async update(dto: UpdateLocationInput,currentUser) {
+    const location = await this.locationService.findOne(dto.id)
     console.log(location)
     const user = this.jwtService.verify(currentUser)
     if (!location) {

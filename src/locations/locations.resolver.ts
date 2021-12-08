@@ -30,7 +30,7 @@ export class LocationsResolver {
   @Mutation(() => Location)
   @UseGuards(JwtAuthGuard)
   updateLocation(@Args('updateLocationInput') updateLocationInput: UpdateLocationInput, @User() currentUser: Account) {
-    return this.locationsService.update(updateLocationInput.id, updateLocationInput, currentUser);
+    return this.locationsService.update(updateLocationInput, currentUser);
   }
 
 

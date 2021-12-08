@@ -68,8 +68,10 @@ type Mutation {
   createActivity(createActivityInput: CreateActivityInput!): Activity!
   createLocation(createLocationInput: CreateLocationInput!): Location!
   login(loginUserInput: LoginUserInput!): LoginResponse!
+  removeActivity(id: Int!): Activity!
   removeLocation(id: Int!): Location!
   signup(createUserInput: CreateUserInput!): Account!
+  updateActivity(updateActivityInput: UpdateActivityInput!): Activity!
   updateLocation(updateLocationInput: UpdateLocationInput!): Location!
 }
 
@@ -77,6 +79,14 @@ type Query {
   availableLocationByDate(availableLocationByDay: dayInput!): [Location!]!
   dates(dateIntervalInput: DateIntervalInput!): [Activity!]!
   locations: [Location!]!
+}
+
+input UpdateActivityInput {
+  day: String!
+  description: String!
+  id: Int!
+  location: Float!
+  name: String!
 }
 
 input UpdateLocationInput {

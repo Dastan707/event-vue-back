@@ -23,8 +23,6 @@ export class LocationsService {
   constructor(
       @InjectRepository(Location)
       private readonly locationService: Repository<Location>,
-      // @Inject(forwardRef(() => ActivitiesService))
-      // private activitiesService: ActivitiesService,
       private readonly jwtService: JwtService) {
   }
 
@@ -42,7 +40,7 @@ export class LocationsService {
     console.log(location)
     const user = this.jwtService.verify(currentUser)
     if (!location) {
-      throw new HttpException('activity does not exist', HttpStatus.NOT_FOUND)
+      throw new HttpException('Location does not exist', HttpStatus.NOT_FOUND)
     }
 
     if(location.account.email!==user.email){
@@ -76,17 +74,17 @@ export class LocationsService {
     })
   }
 
-  async findByLocation(id: number) {
-    const locationById = await this.locationService.findOne(id, {relations: ["activities"]})
-
-    if (!locationById) {
-      throw new HttpException('there is no such location', HttpStatus.NOT_FOUND)
-    }
-    const currentActivity = locationById.activities
-    console.log(currentActivity)
-    return currentActivity
-
-  }
+  // async findByLocation(id: number) {
+  //   const locationById = await this.locationService.findOne(id, {relations: ["activities"]})
+  //
+  //   if (!locationById) {
+  //     throw new HttpException('there is no such location', HttpStatus.NOT_FOUND)
+  //   }
+  //   const currentActivity = locationById.activities
+  //   console.log(currentActivity)
+  //   return currentActivity
+  //
+  // }
 
   async findByLocationAndTime(id: number, day:Date) {
     const locationById = await this.locationService.findOne(id, {relations: ["activities"]})

@@ -7,8 +7,9 @@ import {dayInput} from "./dto/day.input";
 import {Location} from "../locations/entities/location.entity";
 import {User} from "../decorators/user.decorator";
 import {Account} from "../accounts/entities/account.entity";
-import {DefaultValuePipe, ParseIntPipe, UseGuards} from "@nestjs/common";
+import {UseGuards} from "@nestjs/common";
 import {JwtAuthGuard} from "../accounts/jwt-auth.guard";
+import {UpdateActivityInput} from "./dto/update-activity.input";
 
 
 @Resolver(() => Activity)
@@ -32,5 +33,17 @@ export class ActivitiesResolver {
     return this.activitiesService.availableLocationByDate(day)
   }
 
+  @Mutation(() => Activity)
+  @UseGuards(JwtAuthGuard)
+  removeActivity(@Args('id', { type: () => Int }) id: number, @User() currentUser: Account) {
+    return this.activitiesService.remove(id, currentUser);
+  }
+
+
+  @Mutation(() => Activity)
+  @UseGuards(JwtAuthGuard)
+  updateActivity(@Args('updateActivityInput') updateActivityInput: UpdateActivityInput, @User() currentUser: Account) {
+    return this.activitiesService.update(updateActivityInput, currentUser);
+  }
 
 }

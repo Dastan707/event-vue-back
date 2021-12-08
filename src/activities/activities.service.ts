@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import { CreateActivityInput } from './dto/create-activity.input';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Activity} from "./entities/activity.entity";
@@ -7,7 +7,7 @@ import {LocationsService} from "../locations/locations.service";
 import {DateIntervalInput} from "./dto/dateInterval.input";
 import {dayInput} from "./dto/day.input";
 import {JwtService} from "@nestjs/jwt";
-import {paginate, Pagination, IPaginationOptions} from "nestjs-typeorm-paginate";
+
 
 
 @Injectable()
@@ -86,23 +86,44 @@ export class ActivitiesService {
         }
       }
     }
-
     let difference = dataLocation.
     filter(x => !blackList.
     includes(x)).
     concat(blackList.
     filter(x => !dataLocation.includes(x)));
-
-    const activities = await this.locationService.find(difference);
-    console.log(activities)
-    return activities
+    return this.locationService.find(difference);
   }
 
-  // async paginate(options: IPaginationOptions): Promise<Pagination<Activity>>{
-  //   const queryBuilder = this.activityRepository.createQueryBuilder('activity');
-  //   queryBuilder.orderBy('activity.name', 'DESC')
-  //   return paginate<Activity>(queryBuilder, options)
-  // }
+  async remove(id, currentUser){
+    const activity = await this.activityRepository.findOne(id)
+    const user = this.jwtService.verify(currentUser)
+
+    if (!activity) {
+      throw new HttpException('Activity does not exist', HttpStatus.NOT_FOUND)
+    }
+    if(activity.account.email!==user.email){
+      throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
+
+    }
+    await this.activityRepository.delete(id)
+    return new HttpException('Activity was removed', HttpStatus.OK)
+
+  }
+
+  async update(dto, currentUser){
+    const activity = await this.activityRepository.findOne(dto.id)
+    const user = this.jwtService.verify(currentUser)
+    if (!activity) {
+      throw new HttpException('activity does not exist', HttpStatus.NOT_FOUND)
+    }
+
+    if(activity.account.email!==user.email){
+      throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
+    }
+    Object.assign(activity, dto)
+    return this.activityRepository.save(activity)
+  }
+
 
   async find(id){
     return this.activityRepository.find({where:{id: In(id)}})

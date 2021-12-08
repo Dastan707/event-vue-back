@@ -34,7 +34,7 @@ export class LocationsService {
     console.log(currentUser)
     Object.assign(location, dto)
     location.account=currentUser
-    return await this.locationService.save(location)
+    return this.locationService.save(location)
   }
 
   async update(id: number, dto: UpdateLocationInput,currentUser) {
@@ -49,7 +49,7 @@ export class LocationsService {
       throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
     }
     Object.assign(location, dto)
-    return await this.locationService.save(location)
+    return this.locationService.save(location)
   }
 
   async remove(id: number, currentUser) {

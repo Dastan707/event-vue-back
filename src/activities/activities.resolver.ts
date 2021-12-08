@@ -7,7 +7,7 @@ import {dayInput} from "./dto/day.input";
 import {Location} from "../locations/entities/location.entity";
 import {User} from "../decorators/user.decorator";
 import {Account} from "../accounts/entities/account.entity";
-import {UseGuards} from "@nestjs/common";
+import {DefaultValuePipe, ParseIntPipe, UseGuards} from "@nestjs/common";
 import {JwtAuthGuard} from "../accounts/jwt-auth.guard";
 
 
@@ -31,4 +31,6 @@ export class ActivitiesResolver {
   availableLocationByDate(@Args('availableLocationByDay') day: dayInput){
     return this.activitiesService.availableLocationByDate(day)
   }
+
+
 }

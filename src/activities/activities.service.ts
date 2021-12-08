@@ -1,4 +1,4 @@
-import {forwardRef, Inject, Injectable} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import { CreateActivityInput } from './dto/create-activity.input';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Activity} from "./entities/activity.entity";
@@ -7,6 +7,7 @@ import {LocationsService} from "../locations/locations.service";
 import {DateIntervalInput} from "./dto/dateInterval.input";
 import {dayInput} from "./dto/day.input";
 import {JwtService} from "@nestjs/jwt";
+import {paginate, Pagination, IPaginationOptions} from "nestjs-typeorm-paginate";
 
 
 @Injectable()
@@ -15,7 +16,6 @@ export class ActivitiesService {
   constructor(
       @InjectRepository(Activity)
       private readonly activityRepository: Repository<Activity>,
-      // @Inject(forwardRef(() => LocationsService))
       private locationService: LocationsService,
       private readonly jwtService: JwtService
   ) {
@@ -53,12 +53,7 @@ export class ActivitiesService {
         }
       }
     }
-    const dats = []
-    for (let x of dataActivity){
-      const resData = await this.activityRepository.findOne({id: x})
-      dats.push(resData)
-    }
-    return dats
+    return this.find(dataActivity)
   }
 
   async enumerateDaysBetweenDates(start, end){
@@ -91,15 +86,28 @@ export class ActivitiesService {
         }
       }
     }
+
     let difference = dataLocation.
     filter(x => !blackList.
     includes(x)).
     concat(blackList.
     filter(x => !dataLocation.includes(x)));
+
     const activities = await this.locationService.find(difference);
     console.log(activities)
     return activities
   }
+
+  // async paginate(options: IPaginationOptions): Promise<Pagination<Activity>>{
+  //   const queryBuilder = this.activityRepository.createQueryBuilder('activity');
+  //   queryBuilder.orderBy('activity.name', 'DESC')
+  //   return paginate<Activity>(queryBuilder, options)
+  // }
+
+  async find(id){
+    return this.activityRepository.find({where:{id: In(id)}})
+  }
+
   async findAll(){
     return this.activityRepository.find()
   }

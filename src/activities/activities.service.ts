@@ -148,6 +148,22 @@ export class ActivitiesService {
     return this.activityRepository.find({where:{id: In(id)}})
   }
 
+  async findAllActivityByUser(token){
+    const allActivities = await this.findAll()
+    const currentUser = await this.jwtService.verify(token)
+    const usersActivities = []
+
+    for (let activity of allActivities){
+      if(currentUser.id === activity.account.id){
+        usersActivities.push(activity)
+      }
+    }
+
+    return usersActivities
+
+  }
+
+
   async findAll(){
     return this.activityRepository.find()
   }

@@ -76,9 +76,10 @@ type Mutation {
 }
 
 type Query {
-  HOLA(id: Int!): [Activity!]!
   availableLocationByDate(availableLocationByDay: dayInput!): [Location!]!
   dates(dateIntervalInput: DateIntervalInput!): [Activity!]!
+  findActByUser: [Activity!]!
+  findAllActivityFromLocationId(id: Int!): [Activity!]!
   locations: [Location!]!
 }
 

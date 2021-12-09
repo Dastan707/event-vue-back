@@ -136,7 +136,7 @@ export class ActivitiesService {
 
     for ( let activity of activities){
       if (activity.location.id == locationById.id){
-        console.log(activity)
+
         entry.push(activity)
       }
     }

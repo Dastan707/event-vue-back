@@ -17,14 +17,12 @@ export class AccountsService {
   async createUser(dto: CreateUserInput){
     const user = new Account()
     Object.assign(user, dto)
-    console.log(user, dto)
     return await this.userRepository.save(user)
   }
 
   async login(userDto: LoginUserInput) {
     const user = await this.validateUser(userDto)
     const token = await this.generateToken(user)
-    console.log(user)
     return {
       userId: user.id,
       access_token: token.token

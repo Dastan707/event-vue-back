@@ -29,7 +29,7 @@ export class LocationsService {
   async createLocation(dto: CreateLocationInput, token) {
     const location = new Location()
     const currentUser = this.jwtService.verify(token)
-    console.log(currentUser)
+
     Object.assign(location, dto)
     location.account=currentUser
     return this.locationService.save(location)
@@ -37,7 +37,7 @@ export class LocationsService {
 
   async update(dto: UpdateLocationInput,currentUser) {
     const location = await this.locationService.findOne(dto.id)
-    console.log(location)
+
     const user = this.jwtService.verify(currentUser)
     if (!location) {
       throw new HttpException('Location does not exist', HttpStatus.NOT_FOUND)

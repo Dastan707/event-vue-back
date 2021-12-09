@@ -1,0 +1,15 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=blocknote
+      - DB_PW=blocknote
+    volumes:
+      - .docker-data/postgres:/var/lib/postgresql/data

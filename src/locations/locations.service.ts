@@ -1,4 +1,4 @@
-import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
+import {forwardRef, HttpCode, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import { CreateLocationInput } from './dto/create-location.input';
 import { UpdateLocationInput } from './dto/update-location.input';
 import {InjectRepository} from "@nestjs/typeorm";
@@ -50,6 +50,8 @@ export class LocationsService {
     return this.locationService.save(location)
   }
 
+
+
   async remove(id: number, currentUser) {
     const location = await this.locationService.findOne(id)
     const user = this.jwtService.verify(currentUser)
@@ -61,8 +63,9 @@ export class LocationsService {
       throw new HttpException('You are not author', HttpStatus.FORBIDDEN)
 
     }
+
     await this.locationService.delete(id)
-    return new HttpException('Location was removed', HttpStatus.OK)
+    return location
   }
 
   async findById(id){

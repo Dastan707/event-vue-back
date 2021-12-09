@@ -47,7 +47,7 @@ export class ActivitiesResolver {
   }
 
 
-  @Query(()=> [Activity], { name: 'HOLA'})
+  @Query(()=> [Activity], { name: 'findAllActivityFromLocationId'})
   findActLoc(@Args('id', {type: ()=> Int}) id: number){
     return this.activitiesService.findByLocation(id)
   }

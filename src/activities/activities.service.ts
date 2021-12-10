@@ -106,7 +106,7 @@ export class ActivitiesService {
 
     }
     await this.activityRepository.delete(id)
-    return new HttpException('Activity was removed', HttpStatus.OK)
+    return activity
 
   }
 
@@ -163,8 +163,13 @@ export class ActivitiesService {
 
   }
 
+  async findActivity(id){
+    return this.activityRepository.findOne(id)
+  }
+
 
   async findAll(){
     return this.activityRepository.find()
   }
+
 }

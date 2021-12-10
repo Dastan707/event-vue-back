@@ -58,4 +58,16 @@ export class ActivitiesResolver {
   findActByUser(@User() currentUser: Account){
     return this.activitiesService.findAllActivityByUser(currentUser)
   }
+
+  @Query(()=> Activity, { name: 'findActOne'})
+  @UseGuards(JwtAuthGuard)
+  findActivity(@Args('id',{type: ()=> Int}) id: number) {
+      return this.activitiesService.findActivity(id)
+  }
+  @Query(()=> [Activity], { name: 'findAllActivities'})
+  @UseGuards(JwtAuthGuard)
+  findActivities() {
+    return this.activitiesService.findAll()
+  }
+
 }

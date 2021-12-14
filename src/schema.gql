@@ -79,7 +79,9 @@ type Query {
   availableLocationByDate(availableLocationByDay: dayInput!): [Location!]!
   dates(dateIntervalInput: DateIntervalInput!): [Activity!]!
   findActByUser: [Activity!]!
+  findActOne(id: Int!): Activity!
   findAllActivityFromLocationId(id: Int!): [Activity!]!
+  getInfo: Account!
   locations: [Location!]!
 }
 
